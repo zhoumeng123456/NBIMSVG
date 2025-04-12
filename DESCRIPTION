@@ -1,0 +1,31 @@
+Package: NBIMSVG
+Title: Integrated Bayesian non-parametric spatial modeling for cross-sample identification of spatially variable genes
+Version: 0.0.0.9000
+Authors@R: 
+    person("Meng", "Zhou", email = "764487412@qq.com", role = c("aut", "cre"))
+Description: This package provides a integrated Bayesian non-parametric spatial model for cross-sample identification of spatially variable genes
+License: MIT
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports:
+    truncnorm,
+    nlme,
+    spatstat.data,
+    spatstat.geom,
+    spatstat.random,
+    spatstat.explore,
+    spatstat.model,
+    spatstat.linnet,
+    spatstat,
+    splines,
+    mvtnorm,
+    Rcpp,
+    statmod,
+    R.utils,
+    MCMCpack,
+    Matrix,
+    MASS,
+    parallel
+LinkingTo: Rcpp
+
