@@ -4,7 +4,7 @@
 \alias{citgtest}
 \title{single gene process}
 \usage{
-citgtest(g, result, c_alpha, spe.list)
+citgtest(g, result, c_alpha, spelist)
 }
 \arguments{
 \item{g}{:gene number}
@@ -16,7 +16,7 @@ citgtest(g, result, c_alpha, spe.list)
 \item{spelist}{A list of length m. Each element is a sublist containing:
 \itemize{
 \item{expression_matrix: Matrix (spots x genes)}
-\item{location_matrix: Matrix (spots x \link{x, y} coordinates)}
+\item{location_matrix: Matrix (spots x coordinates)}
 }}
 }
 \value{

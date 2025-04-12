@@ -4,16 +4,16 @@
 \alias{validate_data_consistency_strict}
 \title{data Detection}
 \usage{
-validate_data_consistency_strict(spe.list, c_alpha)
+validate_data_consistency_strict(spelist, c_alpha)
 }
 \arguments{
-\item{c_alpha}{A list of length m, each element being a covariates matrix.}
-
 \item{spelist}{A list of length m. Each element is a sublist containing:
 \itemize{
 \item{expression_matrix: Matrix (spots x genes)}
-\item{location_matrix: Matrix (spots x \link{x, y} coordinates)}
+\item{location_matrix: Matrix (spots x coordinates)}
 }}
+
+\item{c_alpha}{A list of length m, each element being a covariates matrix.}
 }
 \value{
 TRUE or warnings

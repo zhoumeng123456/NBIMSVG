@@ -4,10 +4,14 @@
 \alias{CTIG}
 \title{data preprocess}
 \usage{
-CTIG(spe.list)
+CTIG(spelist)
 }
 \arguments{
-\item{spe.list}{:same to spelist}
+\item{spelist}{A list of length m. Each element is a sublist containing:
+\itemize{
+\item{expression_matrix: Matrix (spots x genes)}
+\item{location_matrix: Matrix (spots x coordinates)}
+}}
 }
 \value{
 : preprocessed data

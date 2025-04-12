@@ -4,10 +4,14 @@
 \alias{tun_spl}
 \title{choose the basic function degree}
 \usage{
-tun_spl(spe.list, calpha.list, g = 1)
+tun_spl(spelist, calpha.list, g = 1)
 }
 \arguments{
-\item{spe.list}{:same to spelist}
+\item{spelist}{A list of length m. Each element is a sublist containing:
+\itemize{
+\item{expression_matrix: Matrix (spots x genes)}
+\item{location_matrix: Matrix (spots x  coordinates)}
+}}
 
 \item{calpha.list}{:same to c_alpha}
 

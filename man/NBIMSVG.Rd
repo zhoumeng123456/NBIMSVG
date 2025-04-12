@@ -10,7 +10,7 @@ NBIMSVG(spelist, c_alpha, num_cores = 1)
 \item{spelist}{A list of length m. Each element is a sublist containing:
 \itemize{
 \item{expression_matrix: Matrix (spots x genes)}
-\item{location_matrix: Matrix (spots x \link{x, y} coordinates)}
+\item{location_matrix: Matrix (spots x coordinates)}
 }}
 
 \item{c_alpha}{A list of length m, each element being a covariates matrix.}
@@ -44,7 +44,7 @@ spelist <- list(list(result1[[1]], result1[[2]]),list(result2[[1]], result2[[2]]
 c_alpha <- list(result1[[3]],  result2[[3]],result3[[3]],result4[[3]])# covariates
 
 # Run analysis (parallel with 4 cores)
-result <- NBIMSVG(spelist = spelist,c_alpha = c_alpha,num_cores = 4)
+result <- NBIMSVG(spelist = spelist,c_alpha = c_alpha,num_cores = 1)
 
 # Print key outputs:
 # 1. Posterior mean probabilities

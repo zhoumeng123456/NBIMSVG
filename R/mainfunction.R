@@ -3,7 +3,7 @@
 #' @param spelist A list of length m. Each element is a sublist containing:
 #'   \itemize{
 #'     \item{expression_matrix: Matrix (spots x genes)}
-#'     \item{location_matrix: Matrix (spots x [x, y] coordinates)}
+#'     \item{location_matrix: Matrix (spots x coordinates)}
 #'   }
 #' @param c_alpha A list of length m, each element being a covariates matrix.
 #' @param num_cores Number of CPU cores for parallelization (default: 1).
@@ -17,6 +17,13 @@
 #'     \item{svgenename: Names of identified SV genes}
 #'   }
 #' @export
+#' @importFrom splines bs
+#' @importFrom stats AIC as.formula na.omit rnbinom rnorm sd
+#' @importFrom parallel makeCluster clusterEvalQ clusterExport parLapply stopCluster
+#' @importFrom R.utils withTimeout
+#' @importFrom MASS mvrnorm
+#' @importFrom statmod gauss.quad.prob
+#' @importFrom pscl hurdle zeroinfl
 #'
 #' @examples
 #' # Simulate 4 datasets with different spatial patterns
@@ -32,7 +39,7 @@
 #' c_alpha <- list(result1[[3]],  result2[[3]],result3[[3]],result4[[3]])# covariates
 #'
 #' # Run analysis (parallel with 4 cores)
-#' result <- NBIMSVG(spelist = spelist,c_alpha = c_alpha,num_cores = 4)
+#' result <- NBIMSVG(spelist = spelist,c_alpha = c_alpha,num_cores = 1)
 #'
 #' # Print key outputs:
 #' # 1. Posterior mean probabilities
@@ -47,7 +54,7 @@ NBIMSVG <- function(spelist,c_alpha,num_cores=1){
   genename <- colnames(spelist[[1]][[1]])
 
   # initial
-  result_ctig <- CTIG(spe.list = spelist)
+  result_ctig <- CTIG(spelist = spelist)
 
   cl <- makeCluster(num_cores)
   clusterEvalQ(cl, {
@@ -88,7 +95,7 @@ NBIMSVG <- function(spelist,c_alpha,num_cores=1){
     result_chunk <- parLapply(cl, chunk_data, function(x) {
       result <- tryCatch({
         withTimeout({
-          citgtest(x, result = result_ctig, c_alpha = c_alpha, spe.list = spelist)
+          citgtest(x, result = result_ctig, c_alpha = c_alpha, spelist = spelist)
         }, timeout = 600, onTimeout = "error")
       }, error = function(e) {
         return(c(NA, NA))
@@ -214,15 +221,15 @@ sim_create <- function(gene_size =100,svgene_size=0.1,sv_mark=c(1,1),no_sv_mark 
 
   for(i in 1:npoints){
     if(z_type[i]==1){
-      cell_matrix[i,] <- rdirichlet(1,alpha = c(1,1,1,1,1,1))
+      cell_matrix[i,] <- MCMCpack::rdirichlet(1,alpha = c(1,1,1,1,1,1))
     }else if(z_type[i]==2){
-      cell_matrix[i,] <- rdirichlet(1,alpha = c(1,3,5,7,9,11))
+      cell_matrix[i,] <- MCMCpack::rdirichlet(1,alpha = c(1,3,5,7,9,11))
     }else if(z_type[i]==3){
-      cell_matrix[i,] <- rdirichlet(1,alpha = c(14,12,10,8,6,4))
+      cell_matrix[i,] <- MCMCpack::rdirichlet(1,alpha = c(14,12,10,8,6,4))
     }else if(z_type[i]==4){
-      cell_matrix[i,] <- rdirichlet(1,alpha = c(1,4,4,4,4,1))
+      cell_matrix[i,] <- MCMCpack::rdirichlet(1,alpha = c(1,4,4,4,4,1))
     }else{
-      cell_matrix[i,] <- rdirichlet(1,alpha = c(18,16,14,12,10,8))
+      cell_matrix[i,] <- MCMCpack::rdirichlet(1,alpha = c(18,16,14,12,10,8))
     }
   }
 
@@ -584,15 +591,19 @@ VIZINB <- function(y,splinevalue,samplenumber,splinelevel,acrate=0.01,ak=1,dp=1.
 
 #' choose the basic function degree
 #'
-#' @param spe.list :same to spelist
+#' @param spelist A list of length m. Each element is a sublist containing:
+#'   \itemize{
+#'     \item{expression_matrix: Matrix (spots x genes)}
+#'     \item{location_matrix: Matrix (spots x  coordinates)}
+#'   }
 #' @param calpha.list :same to c_alpha
 #' @param g :gene number
 #'
 #' @return the number of basic function degree
 #' @export
-tun_spl <- function(spe.list,calpha.list,g=1){
+tun_spl <- function(spelist,calpha.list,g=1){
   ##test length
-  n1=length(spe.list)
+  n1=length(spelist)
   n2=length(calpha.list)
   if(n1==n2){
   }else{
@@ -601,7 +612,7 @@ tun_spl <- function(spe.list,calpha.list,g=1){
   tunning_choose=rep(1,n1)
   for(iii in c(1:n1)){
     aic_value <- c(1:4)
-    y = unname(spe.list[[iii]][[1]][, g])
+    y = unname(spelist[[iii]][[1]][, g])
 
     # compute the proportion
     zero_count <- sum(y == 0)
@@ -617,8 +628,8 @@ tun_spl <- function(spe.list,calpha.list,g=1){
       for (kkk in c(1:4)){
         splinelevel = kkk
         degreelevel = kkk
-        coord_spline1 <- bs(x = spe.list[[iii]][[2]][, 1], df = splinelevel, degree = degreelevel)
-        coord_spline2 <- bs(x = spe.list[[iii]][[2]][, 2], df = splinelevel, degree = degreelevel)
+        coord_spline1 <- bs(x = spelist[[iii]][[2]][, 1], df = splinelevel, degree = degreelevel)
+        coord_spline2 <- bs(x = spelist[[iii]][[2]][, 2], df = splinelevel, degree = degreelevel)
         x <- cbind(coord_spline1, coord_spline2)
 
         rows_with_sum_1 <- rowSums(calpha.list[[iii]]) == 1
@@ -645,8 +656,8 @@ tun_spl <- function(spe.list,calpha.list,g=1){
       for (kkk in c(1:4)) {
         splinelevel = kkk
         degreelevel = kkk
-        coord_spline1 <- bs(x = spe.list[[iii]][[2]][, 1], df = splinelevel, degree = degreelevel)
-        coord_spline2 <- bs(x = spe.list[[iii]][[2]][, 2], df = splinelevel, degree = degreelevel)
+        coord_spline1 <- bs(x = spelist[[iii]][[2]][, 1], df = splinelevel, degree = degreelevel)
+        coord_spline2 <- bs(x = spelist[[iii]][[2]][, 2], df = splinelevel, degree = degreelevel)
         x <- cbind(coord_spline1, coord_spline2)
 
         rows_with_sum_1 <- rowSums(calpha.list[[iii]]) == 1
@@ -680,22 +691,26 @@ tun_spl <- function(spe.list,calpha.list,g=1){
 
 #' data preprocess
 #'
-#' @param spe.list :same to spelist
+#' @param spelist A list of length m. Each element is a sublist containing:
+#'   \itemize{
+#'     \item{expression_matrix: Matrix (spots x genes)}
+#'     \item{location_matrix: Matrix (spots x coordinates)}
+#'   }
 #'
 #' @return: preprocessed data
 #' @export
 
-CTIG<-function(spe.list){
+CTIG<-function(spelist){
   #obtain the number of datasets
-  m=length(spe.list)
+  m=length(spelist)
   Y.list<-list()
   coord.list<-list()
   samplenumber<-c()
 
   for(i in 1:m){
-    Y.list[[i]]<-spe.list[[i]][[1]]#spot*gene
+    Y.list[[i]]<-spelist[[i]][[1]]#spot*gene
     samplenumber[i]<-nrow(Y.list[[i]])## get sample number of each datasets
-    coord<-spe.list[[i]][[2]]
+    coord<-spelist[[i]][[2]]
     coord <-coord-colMeans(coord)#Centercoordinates of spots
     coord <- coord / apply(coord,2,sd)# normalize coordinates of spots
     coord.list[[i]]<-coord
@@ -727,20 +742,20 @@ CTIG<-function(spe.list){
 #' @param spelist A list of length m. Each element is a sublist containing:
 #'   \itemize{
 #'     \item{expression_matrix: Matrix (spots x genes)}
-#'     \item{location_matrix: Matrix (spots x [x, y] coordinates)}
+#'     \item{location_matrix: Matrix (spots x coordinates)}
 #'   }
 #' @param c_alpha A list of length m, each element being a covariates matrix.
 #'
 #' @return the posterior mean of u_k of gene g
 #' @export
-citgtest <- function(g,result,c_alpha,spe.list){
+citgtest <- function(g,result,c_alpha,spelist){
   Ysingle.list<-list()
   for(i in 1:length(result[[3]])){
     Ysingle.list[[i]]<-as.vector(result[[1]][[i]][,g])
   }
   begin <- Sys.time()
   #obtain the b-spline level
-  tun_choose <- tun_spl(spe.list = spe.list,calpha.list = c_alpha,g=g)
+  tun_choose <- tun_spl(spelist = spelist,calpha.list = c_alpha,g=g)
   if(tun_choose==1){
     ak1=0.08
   }else if(tun_choose==2){
@@ -763,18 +778,18 @@ citgtest <- function(g,result,c_alpha,spe.list){
 #' @param spelist A list of length m. Each element is a sublist containing:
 #'   \itemize{
 #'     \item{expression_matrix: Matrix (spots x genes)}
-#'     \item{location_matrix: Matrix (spots x [x, y] coordinates)}
+#'     \item{location_matrix: Matrix (spots x coordinates)}
 #'   }
 #' @param c_alpha A list of length m, each element being a covariates matrix.
 #'
 #' @return TRUE or warnings
 #' @export
-validate_data_consistency_strict <- function(spe.list, c_alpha) {
+validate_data_consistency_strict <- function(spelist, c_alpha) {
   # 1. Gene name Detection
-  ref_genes <- colnames(spe.list[[1]][[1]])  # Taking the first dataset as reference
+  ref_genes <- colnames(spelist[[1]][[1]])  # Taking the first dataset as reference
 
-  for (m in seq_along(spe.list)) {
-    current_genes <- colnames(spe.list[[m]][[1]])
+  for (m in seq_along(spelist)) {
+    current_genes <- colnames(spelist[[m]][[1]])
     if (!identical(current_genes, ref_genes)) {
       stop(sprintf(
         "[Gene name Detection] dataset ",m," : number or order of genes does not match.Stop!"
@@ -796,9 +811,9 @@ validate_data_consistency_strict <- function(spe.list, c_alpha) {
   }
 
   #3. spot name consistency Detection
-  for (m in seq_along(spe.list)) {
-    spots_expr <- rownames(spe.list[[m]][[1]])
-    spots_coord <- rownames(spe.list[[m]][[2]])
+  for (m in seq_along(spelist)) {
+    spots_expr <- rownames(spelist[[m]][[1]])
+    spots_coord <- rownames(spelist[[m]][[2]])
     spots_calpha <- rownames(c_alpha[[m]])
     if (any(sapply(list(spots_expr, spots_coord, spots_calpha), is.null))) {
       stop(sprintf(

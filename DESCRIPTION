@@ -3,8 +3,8 @@ Title: Integrated Bayesian non-parametric spatial modeling for cross-sample iden
 Version: 0.0.0.9000
 Authors@R: 
     person("Meng", "Zhou", email = "764487412@qq.com", role = c("aut", "cre"))
-Description: This package provides a integrated Bayesian non-parametric spatial model for cross-sample identification of spatially variable genes
-License: MIT
+Description: This package provides a Bayesian non-parametric method for identifying spatially variable genes from multiple spatial transcriptomics datasets.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
@@ -20,12 +20,13 @@ Imports:
     spatstat,
     splines,
     mvtnorm,
-    Rcpp,
     statmod,
     R.utils,
     MCMCpack,
     Matrix,
     MASS,
-    parallel
-LinkingTo: Rcpp
+    parallel,
+    pscl
+
+
 
