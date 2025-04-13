@@ -1,4 +1,4 @@
-# NBIMSVG
+## NBIMSVG
 [![R build status](https://github.com/zhoumeng123456/NBIMSVG/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/zhoumeng123456/NBIMSVG/actions)
 
 
