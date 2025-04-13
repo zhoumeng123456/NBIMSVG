@@ -35,7 +35,10 @@
 #' result4 <- sim_create(gene_size = 20, svgene_size = 0.5, sv_mark = c(0.5, 0.5), inf_size = 0.5, seed = seed + 3)
 #'
 #' # Format input for NBIMSVG()
-#' spelist <- list(list(result1[[1]], result1[[2]]),list(result2[[1]], result2[[2]]),list(result3[[1]], result3[[2]]),list(result4[[1]], result4[[2]]))#expression matrix and location
+#' spelist <- list(list(result1[[1]], result1[[2]]),
+#'                 list(result2[[1]], result2[[2]]),
+#'                 list(result3[[1]], result3[[2]]),
+#'                 list(result4[[1]], result4[[2]])) #expression matrix and location
 #' c_alpha <- list(result1[[3]],  result2[[3]],result3[[3]],result4[[3]])# covariates
 #'
 #' # Run analysis (parallel with 4 cores)
@@ -69,7 +72,6 @@ NBIMSVG <- function(spelist,c_alpha,num_cores=1){
     library(spatstat.linnet)
     library(splines)
     library(mvtnorm)
-    library(Rcpp)
     library(statmod)
     library(R.utils)
     library(MCMCpack)

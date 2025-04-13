@@ -49,7 +49,10 @@ dim(result1[[3]])#covariates
 
 ```{r}
 # Format input for NBIMSVG()
-spelist <- list(list(result1[[1]], result1[[2]]),list(result2[[1]], result2[[2]]),list(result3[[1]], result3[[2]]),list(result4[[1]], result4[[2]]))
+spelist <- list(list(result1[[1]], result1[[2]]),
+                list(result2[[1]], result2[[2]]),
+                list(result3[[1]], result3[[2]]),
+                list(result4[[1]], result4[[2]]))
 c_alpha <- list(result1[[3]],  result2[[3]],result3[[3]],result4[[3]])
 ```
 
