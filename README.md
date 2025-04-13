@@ -9,21 +9,17 @@ The "NBIMSVG" method propose a novel Bayesian hierarchical framework incorporati
 
 
 ## Installation
-
 The package can be installed from github as follows, using R version 4.4 or above:
-
 
 ```{r}
 install.packages("remotes")
 remotes::install_github("zhoumeng123456/NBIMSVG")
 ```
 
-
 ## Example workflow
 A short example workflow is shown below.
 
 **Load packages**
-
 ```{r}
 library(NBIMSVG)
 ```
@@ -46,6 +42,12 @@ dim(result1[[3]])#covariates
 ```
 
 ```{r}
+## [1] 1024   20
+## [1] 1024    2
+## [1] 1024    6
+```
+
+```{r}
 # Format input for NBIMSVG()
 spelist <- list(list(result1[[1]], result1[[2]]),list(result2[[1]], result2[[2]]),list(result3[[1]], result3[[2]]),list(result4[[1]], result4[[2]]))
 c_alpha <- list(result1[[3]],  result2[[3]],result3[[3]],result4[[3]])
@@ -63,8 +65,15 @@ print(result[[2]])
 ```
 
 ```{r}
+## [1] 0.999999969 0.999999969 0.999999969 0.999999969 0.999999969 0.999999969 0.999999969 0.999999969 0.999999969 0.999999969 0.005261495 0.005063096
+## [13] 0.005048044 0.005046146 0.005210938 0.005193718 0.004991679 0.005016770 0.005063979 0.005002699
+```
+
+```{r}
 # 2. Binary classification of SV genes
 print(result[[4]])
 ```
 
-
+```{r}
+## [1] "gene 1"  "gene 2"  "gene 3"  "gene 4"  "gene 5"  "gene 6"  "gene 7"  "gene 8"  "gene 9"  "gene 10"
+```
