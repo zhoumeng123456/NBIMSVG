@@ -19,7 +19,7 @@
 #' @export
 #' @importFrom splines bs
 #' @importFrom stats AIC as.formula na.omit rnbinom rnorm sd
-#' @importFrom parallel makeCluster clusterEvalQ clusterExport parLapply stopCluster
+#' @importFrom parallel makeCluster clusterEvalQ clusterExport parLapply stopCluster detectCores
 #' @importFrom R.utils withTimeout
 #' @importFrom MASS mvrnorm
 #' @importFrom statmod gauss.quad.prob
@@ -56,7 +56,8 @@ NBIMSVG <- function(spelist,c_alpha,num_cores=1){
   # initial
   result_ctig <- CTIG(spelist = spelist)
 
-  cl <- makeCluster(num_cores)
+  available_cores <- detectCores()-1
+  cl <- makeCluster(min(num_cores,available_cores))
   clusterEvalQ(cl, {
     library(truncnorm)
     library(nlme)
