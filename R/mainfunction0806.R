@@ -35,7 +35,7 @@
 #' @examples
 #' # Simulate 4 datasets with different spatial patterns
 #' \donttest{
-#' seed <- 111
+#' seed <- 123
 #' result1 <- sim_create(gene_size = 20, svgene_size = 0.5, sv_mark = c(0.8, 0.8), inf_size = 0.5, seed = seed)
 #' result2 <- sim_create(gene_size = 20, svgene_size = 0.5, sv_mark = c(0.5, 0.5), inf_size = 0.5, seed = seed + 1)
 #' result3 <- sim_create(gene_size = 20, svgene_size = 0.5, sv_mark = c(0.5, 0.5), inf_size = 0.5, seed = seed + 2)
