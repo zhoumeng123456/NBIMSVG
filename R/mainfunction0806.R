@@ -7,12 +7,13 @@
 #'   }
 #' @param c_alpha A list of length m, each element being a covariates matrix.
 #' @param num_cores Number of CPU cores for parallelization (default: 1).
-#' @param alpha : Significance level, default is 0.05
+#' @param alpha : Significance level, default is 0.05.
+#' @param acrate :the minimum threshold for EBLO convergence.
 #' @param gamma1 :hyperparameter of the slab and spike prior of beta. Default is sqrt(0.001).
 #' @param gamma2 :hyperparameter of the bi-level structure of alpha. We set $\Gamma_2$ to 0.01, 0.005, and 0.001 for more than four, three, and two or fewer slices, respectively.
 #' @param min_iter : the minimum number of iteration.
 #' @param max_iter : the maximum number of iteration. 
-#' @param speci_iter: Number of times the early convergence criterion is met
+#' @param speci_iter: Number of times the early convergence criterion is met.
 #' 
 #' @return A list with:
 #'   \itemize{
