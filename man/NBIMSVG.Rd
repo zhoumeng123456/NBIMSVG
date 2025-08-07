@@ -13,7 +13,7 @@ NBIMSVG(
   gamma1 = sqrt(0.001),
   gamma2 = 0.01,
   min_iter = 30,
-  max_iter = 200,
+  max_iter = 100,
   speci_iter = 12
 )
 }
@@ -36,9 +36,9 @@ NBIMSVG(
 
 \item{gamma2}{:hyperparameter of the bi-level structure of alpha. We set gamma2 to 0.01, 0.005, and 0.001 for more than four, three, and two or fewer slices, respectively.}
 
-\item{min_iter}{: the minimum number of iteration.}
+\item{min_iter}{: the minimum number of iteration. Default to 30.}
 
-\item{max_iter}{: the maximum number of iteration.}
+\item{max_iter}{: the maximum number of iteration. Default to 100.}
 
 \item{speci_iter}{: Number of times the early convergence criterion is met.}
 }

@@ -20,7 +20,7 @@ VIZINB(
   gamma1 = sqrt(0.001),
   gamma2 = 0.01,
   min_iter = 30,
-  max_iter = 200,
+  max_iter = 100,
   speci_iter = 12
 )
 }
