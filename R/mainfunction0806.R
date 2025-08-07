@@ -11,8 +11,8 @@
 #' @param acrate :the minimum threshold for EBLO convergence.
 #' @param gamma1 :hyperparameter of the slab and spike prior of beta. Default is sqrt(0.001).
 #' @param gamma2 :hyperparameter of the bi-level structure of alpha. We set gamma2 to 0.01, 0.005, and 0.001 for more than four, three, and two or fewer slices, respectively.
-#' @param min_iter : the minimum number of iteration.
-#' @param max_iter : the maximum number of iteration.
+#' @param min_iter : the minimum number of iteration. Default to 30.
+#' @param max_iter : the maximum number of iteration. Default to 100.
 #' @param speci_iter : Number of times the early convergence criterion is met.
 #'
 #' @return A list with:
@@ -58,7 +58,7 @@
 #' # 2. Binary classification of SV genes
 #' print(result[[4]])
 #' }
-NBIMSVG <- function(spelist,c_alpha,num_cores=1,acrate=0.01,alpha=0.05,gamma1=sqrt(0.001),gamma2=0.01,min_iter=30,max_iter=200,speci_iter=12){
+NBIMSVG <- function(spelist,c_alpha,num_cores=1,acrate=0.01,alpha=0.05,gamma1=sqrt(0.001),gamma2=0.01,min_iter=30,max_iter=100,speci_iter=12){
   validate_data_consistency_strict(spelist, c_alpha)
   genenum <- length(colnames(spelist[[1]][[1]]))
   genename <- colnames(spelist[[1]][[1]])
@@ -326,7 +326,7 @@ sim_create <- function(gene_size =100,svgene_size=0.1,sv_mark=c(1,1),no_sv_mark 
 #'
 #'
 VIZINB <- function(y,splinevalue,samplenumber,splinelevel,acrate=0.01,ak=1,dp=1.8,cp=0.2,c_alpha,knum=6,
-                   cq=1,dq=1,gamma1=sqrt(0.001),gamma2=0.01,min_iter=30,max_iter=200,speci_iter=12){
+                   cq=1,dq=1,gamma1=sqrt(0.001),gamma2=0.01,min_iter=30,max_iter=100,speci_iter=12){
   ##handle the input and initial the parameters
   # 添加参数检查
   stopifnot(length(y) == length(splinevalue))
