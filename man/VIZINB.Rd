@@ -57,7 +57,7 @@ VIZINB(
 
 \item{max_iter}{: the maximum number of iteration.}
 
-\item{speci_iter:}{Number of times the early convergence criterion is met}
+\item{speci_iter}{: Number of times the early convergence criterion is met}
 }
 \value{
 the posterior mean of u
