@@ -317,7 +317,6 @@ sim_create <- function(gene_size =100,svgene_size=0.1,sv_mark=c(1,1),no_sv_mark 
 #' @param dq :hyperparameter of u's beta prior
 #' @param gamma1 :hyperparameter of the slab and spike prior of beta. Default is sqrt(0.001).
 #' @param gamma2 :hyperparameter of the bi-level structure of alpha. We set gamma2 to 0.01, 0.005, and 0.001 to represent scenarios integrating more than four, three, and two or fewer slices, respectively.
-#'
 #' @param min_iter : the minimum number of iteration.
 #' @param max_iter : the maximum number of iteration.
 #' @param speci_iter : Number of times the early convergence criterion is met
@@ -757,6 +756,12 @@ CTIG<-function(spelist){
 #'     \item{location_matrix: Matrix (spots x coordinates)}
 #'   }
 #' @param c_alpha A list of length m, each element being a covariates matrix.
+#' @param acrate :the minimum threshold for EBLO convergence.
+#' @param gamma1 :hyperparameter of the slab and spike prior of beta. Default is sqrt(0.001).
+#' @param gamma2 :hyperparameter of the bi-level structure of alpha. We set gamma2 to 0.01, 0.005, and 0.001 for more than four, three, and two or fewer slices, respectively.
+#' @param min_iter : the minimum number of iteration.
+#' @param max_iter : the maximum number of iteration.
+#' @param speci_iter : Number of times the early convergence criterion is met.
 #'
 #' @return the posterior mean of u_k of gene g
 #' @export

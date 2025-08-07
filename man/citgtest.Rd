@@ -29,6 +29,18 @@ citgtest(
 \item{expression_matrix: Matrix (spots x genes)}
 \item{location_matrix: Matrix (spots x coordinates)}
 }}
+
+\item{acrate}{:the minimum threshold for EBLO convergence.}
+
+\item{gamma1}{:hyperparameter of the slab and spike prior of beta. Default is sqrt(0.001).}
+
+\item{gamma2}{:hyperparameter of the bi-level structure of alpha. We set gamma2 to 0.01, 0.005, and 0.001 for more than four, three, and two or fewer slices, respectively.}
+
+\item{min_iter}{: the minimum number of iteration.}
+
+\item{max_iter}{: the maximum number of iteration.}
+
+\item{speci_iter}{: Number of times the early convergence criterion is met.}
 }
 \value{
 the posterior mean of u_k of gene g
