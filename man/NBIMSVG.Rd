@@ -34,13 +34,13 @@ NBIMSVG(
 
 \item{gamma1}{:hyperparameter of the slab and spike prior of beta. Default is sqrt(0.001).}
 
-\item{gamma2}{:hyperparameter of the bi-level structure of alpha. We set $\Gamma_2$ to 0.01, 0.005, and 0.001 for more than four, three, and two or fewer slices, respectively.}
+\item{gamma2}{:hyperparameter of the bi-level structure of alpha. We set gamma2 to 0.01, 0.005, and 0.001 for more than four, three, and two or fewer slices, respectively.}
 
 \item{min_iter}{: the minimum number of iteration.}
 
 \item{max_iter}{: the maximum number of iteration.}
 
-\item{speci_iter:}{Number of times the early convergence criterion is met.}
+\item{speci_iter}{: Number of times the early convergence criterion is met.}
 }
 \value{
 A list with:
