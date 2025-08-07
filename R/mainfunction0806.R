@@ -320,7 +320,7 @@ sim_create <- function(gene_size =100,svgene_size=0.1,sv_mark=c(1,1),no_sv_mark 
 #'
 #' @param min_iter : the minimum number of iteration.
 #' @param max_iter : the maximum number of iteration.
-#' @param speci_iter: Number of times the early convergence criterion is met
+#' @param speci_iter : Number of times the early convergence criterion is met
 #'
 #' @return the posterior mean of u
 #' @export
